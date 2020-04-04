@@ -2,6 +2,7 @@
 document.write('<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css">');
 document.write('<link href="https://vjs.zencdn.net/7.7.5/video-js.css" rel="stylesheet" />');
 document.write('<link href="https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.0/fantasy/index.css" rel="stylesheet">');
+document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.js"></script>');
 // markdown支持
 document.write('<script src="//cdn.jsdelivr.net/npm/markdown-it@10.0.0/dist/markdown-it.min.js"></script>');
 document.write('<style>.mdui-appbar .mdui-toolbar{height:56px;font-size:1pc}.mdui-toolbar>*{padding:0 6px;margin:0 2px}.mdui-toolbar>i{opacity:.5}.mdui-toolbar>.mdui-typo-headline{padding:0 1pc 0 0}.mdui-toolbar>i{padding:0}.mdui-toolbar>a:hover,a.active,a.mdui-typo-headline{opacity:1}.mdui-container{max-width:980px}.mdui-list-item{transition:none}.mdui-list>.th{background-color:initial}.mdui-list-item>a{width:100%;line-height:3pc}.mdui-list-item{margin:2px 0;padding:0}.mdui-toolbar>a:last-child{opacity:1}@media screen and (max-width:980px){.mdui-list-item .mdui-text-right{display:none}.mdui-container{width:100%!important;margin:0}.mdui-toolbar>.mdui-typo-headline,.mdui-toolbar>a:last-child,.mdui-toolbar>i:first-child{display:block}}</style>');
@@ -20,6 +21,7 @@ function init() {
 	`;
     $('body').html(html);
 }
+
 function getDocumentHeight() {
     var D = document;
     return Math.max(
@@ -769,11 +771,15 @@ function file_video(path) {
 function file_document(path) {
     var url = window.location.origin + path;
     var content = `
-<iframe src="http://docs.google.com/gview?url=${url}" frameborder="0"></iframe>
-<a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
+<div id="example1"></div>
+
 <object data="${url}" type="application/pdf" name="test.pdf">
 <embed src="${url}" type="application/pdf">
 </object>
+<a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
+
+<script>PDFObject.embed("${url}", "#example1");</script>
+
 `;
     $('#content').html(content);
 }
