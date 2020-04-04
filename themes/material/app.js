@@ -674,6 +674,9 @@ function file(path) {
     if ("|bmp|jpg|jpeg|png|gif|".indexOf(`|${ext}|`) >= 0) {
         return file_image(path);
     }
+	if ("|pdf|docx|xls|pptx|doc|".indexOf(`|${ext}|`) >= 0) {
+        return file_document(path);
+    }
 }
 
 // 文件展示 |html|php|css|go|java|js|json|txt|sh|md|
@@ -737,20 +740,14 @@ function file_video(path) {
         playBtn = `	<a class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" href="intent:${url}#Intent;package=com.mxtech.videoplayer.ad;S.title=${path};end"><i class="mdui-icon material-icons">&#xe039;</i>在mxplayer中播放</a>`;
     }
     var content = `
-<div class="mdui-container-fluid">
+	<div class="mdui-container-fluid">
 	<br>
-	<video class="mdui-video-fluid mdui-center" preload controls>
-	  <source src="${url}" type="video/mp4">
-	</video>
-	<br>
-	
 	<video
     id="my-video"
     class="video-js vjs-theme-fantasy"
     controls
     preload="auto"
-    width="640"
-    height="264"
+    width="100%"
     data-setup="{}"
   >
     <source src="${url}" type="video/mp4" />
@@ -770,7 +767,15 @@ function file_video(path) {
 	`;
     $('#content').html(content);
 }
+function file_document(path) {
+    var url = window.location.origin + path;
+    var content = `
+<iframe src="http://docs.google.com/gview?url=${url}" frameborder="0"></iframe>
+<a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
 
+`;
+    $('#content').html(content);
+}
 // 文件展示 音频 |mp3|m4a|wav|ogg|
 function file_audio(path) {
     var url = window.location.origin + path;
