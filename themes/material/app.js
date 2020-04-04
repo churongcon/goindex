@@ -20,7 +20,6 @@ function init() {
 	`;
     $('body').html(html);
 }
-
 function getDocumentHeight() {
     var D = document;
     return Math.max(
