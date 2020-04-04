@@ -351,7 +351,7 @@ function append_files_to_list(path, files) {
                 });
             }
             var ext = p.split('.').pop().toLowerCase();
-            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|".indexOf(`|${ext}|`) >= 0) {
+            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|pdf|".indexOf(`|${ext}|`) >= 0) {
                 targetFiles.push(filepath);
                 p += "?a=view";
                 c += " view";
@@ -674,7 +674,7 @@ function file(path) {
     if ("|bmp|jpg|jpeg|png|gif|".indexOf(`|${ext}|`) >= 0) {
         return file_image(path);
     }
-	if ("|pdf|docx|xls|pptx|doc|".indexOf(`|${ext}|`) >= 0) {
+	if ("|pdf|".indexOf(`|${ext}|`) >= 0) {
         return file_document(path);
     }
 }
@@ -772,7 +772,9 @@ function file_document(path) {
     var content = `
 <iframe src="http://docs.google.com/gview?url=${url}" frameborder="0"></iframe>
 <a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
-
+<object data="${url}" type="application/pdf" name="test.pdf">
+<embed src="${url}" type="application/pdf">
+</object>
 `;
     $('#content').html(content);
 }
