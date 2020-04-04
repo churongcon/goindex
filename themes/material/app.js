@@ -772,8 +772,6 @@ function file_document(path) {
     var url = window.location.origin + path;
     var content = `
 <div id="example1"></div>
-<object data="${url}" type="application/pdf" name="test.pdf">
-</object>
 <a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
 <script>PDFObject.embed("${url}", "#example1");</script>
 
