@@ -850,8 +850,30 @@ function file_pdf(path) {
 
 // Loaded via <script> tag, create shortcut to access PDF.js exports.
 	$(document).ready(function() {
-    $(".pdf-container").pdfviewer();
-}
+			$(".pdf-container").pdfviewer({
+				scale: 2,
+				onDocumentLoaded: function() {
+					var num = $(this).data('pdfviewer').pages();
+					$(this).data('pdfviewer').autoFit();
+					//alert('onDocumentLoaded:'+num);		
+				},
+	            onPrevPage: function() { 
+	            	//alert('onPrevPage'); 
+	            	return true; 
+	            },
+	            onNextPage: function() { 
+	            	//alert('onNextPage'); 
+	            	return true; 
+	            },
+	            onBeforeRenderPage: function(num) {
+	            	//alert('onBeforeRenderPage'); 
+	                return true;
+	            },
+	            onRenderedPage: function(num) {
+	            	//alert('onRenderedPage'); 
+	            }
+			});
+		});
 }
 
 // 图片展示
