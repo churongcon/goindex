@@ -131,17 +131,18 @@ function nav(path) {
             <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i></button>
         </div>`;
 	
-	var search_current = `<div id="search_bar" class="mdui-textfield mdui-textfield-expandable mdui-float-right ${model.is_search_page ? 'mdui-textfield-expanded' : ''}">
+	var search_current = `<div class="mdui-toolbar-spacer"></div>
+		<div id="search_bar" class="mdui-textfield mdui-textfield-expandable mdui-float-right ${model.is_search_page ? 'mdui-textfield-expanded' : ''}">
             <button class="mdui-textfield-icon mdui-btn mdui-btn-icon" onclick="if($('#search_bar').hasClass('mdui-textfield-expanded') && $('#search_bar_form>input').val()) $('#search_bar_form').submit();">
                 <i class="mdui-icon material-icons">search</i>
             </button>
-            <div id="search_bar_form" method="get" action="/${cur}:search">`;
+            <div id="search_bar_form">`;
 		if(dark){
-		search_current += `<div class="mdui-textfield"><input class="mdui-textfield-input mdui-text-color-white-text" id="myInput" onkeyup="myFunction()" type="text" placeholder="Search for names.."></input></div>`;
+		search_current += `<input class="mdui-textfield-input mdui-text-color-white-text" id="myInput" onkeyup="myFunction()" type="text" placeholder="Search for names.."></input>`;
 		}else{
-		search_current += `<div class="mdui-textfield"><input class="mdui-textfield-input" id="myInput" onkeyup="myFunction()" type="text" placeholder="Search for names.."></input></div>`;
+		search_current += `<input class="mdui-textfield-input" id="myInput" onkeyup="myFunction()" type="text" placeholder="Search for names.."></input>`;
 		}
-        search_current += `<input class="mdui-textfield-input" type="text" name="q" placeholder="Search in current drive" value="${search_text}"/>
+        search_current += `
             </div>
             <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i></button>
         </div>`;
