@@ -388,7 +388,7 @@ function append_files_to_list(path, files) {
                 });
             }
             var ext = p.split('.').pop().toLowerCase();
-            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|flac|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|".indexOf(`|${ext}|`) >= 0) {
+            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|flac|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|pdf|docx|".indexOf(`|${ext}|`) >= 0) {
                 targetFiles.push(filepath);
                 p += "?a=view";
                 c += " view";
@@ -594,7 +594,7 @@ function append_search_result_to_list(files) {
         } else {
             var c = "file";
             var ext = item.name.split('.').pop().toLowerCase();
-            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|flac|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|".indexOf(`|${ext}|`) >= 0) {
+            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|flac|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|pdf|docx|".indexOf(`|${ext}|`) >= 0) {
                 c += " view";
             }
             html += `<li class="mdui-list-item file mdui-ripple" target="_blank"><a id="${item['id']}" gd-type="${item.mimeType}" onclick="onSearchResultItemClick(this)" class="${c}">
@@ -708,7 +708,11 @@ function file(path) {
     if ("|mp3|flac|wav|ogg|m4a|".indexOf(`|${ext}|`) >= 0) {
         return file_audio(path);
     }
-
+	
+	if ("|pdf|docx|".indexOf(`|${ext}|`) >= 0) {
+        return file_pdf(path);
+    }
+	
     if ("|bmp|jpg|jpeg|png|gif|".indexOf(`|${ext}|`) >= 0) {
         return file_image(path);
     }
@@ -821,6 +825,19 @@ function file_audio(path) {
     $('#content').html(content);
 }
 
+// 文件展示 音频 |mp3|flac|m4a|wav|ogg|
+function file_pdf(path) {
+    var url = window.location.origin + path;
+    var content = `
+<div class="mdui-container-fluid">
+	<br>
+	
+	<object width="400" height="50" data="${url}"></object>
+
+</div>
+<a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
+	`;
+}
 
 // 图片展示
 function file_image(path) {
