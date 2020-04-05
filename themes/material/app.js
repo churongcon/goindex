@@ -1,27 +1,32 @@
-// 在head 中 加载 必要静态
+// load in head necessary static
 document.write('<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css">');
-document.write('<link href="https://vjs.zencdn.net/7.7.5/video-js.css" rel="stylesheet" />');
-document.write('<link href="https://cdn.jsdelivr.net/npm/@videojs/themes@1.0.0/fantasy/index.css" rel="stylesheet">');
-document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.js"></script>');
-// markdown支持
+// markdown support
 document.write('<script src="//cdn.jsdelivr.net/npm/markdown-it@10.0.0/dist/markdown-it.min.js"></script>');
 document.write('<style>.mdui-appbar .mdui-toolbar{height:56px;font-size:1pc}.mdui-toolbar>*{padding:0 6px;margin:0 2px}.mdui-toolbar>i{opacity:.5}.mdui-toolbar>.mdui-typo-headline{padding:0 1pc 0 0}.mdui-toolbar>i{padding:0}.mdui-toolbar>a:hover,a.active,a.mdui-typo-headline{opacity:1}.mdui-container{max-width:980px}.mdui-list-item{transition:none}.mdui-list>.th{background-color:initial}.mdui-list-item>a{width:100%;line-height:3pc}.mdui-list-item{margin:2px 0;padding:0}.mdui-toolbar>a:last-child{opacity:1}@media screen and (max-width:980px){.mdui-list-item .mdui-text-right{display:none}.mdui-container{width:100%!important;margin:0}.mdui-toolbar>.mdui-typo-headline,.mdui-toolbar>a:last-child,.mdui-toolbar>i:first-child{display:block}}</style>');
-
-// 初始化页面，并载入必要资源
-function init() {
+if(dark){document.write('<style>* {box-sizing: border-box}body{color:rgba(255,255,255,.87);background-color:#333232}.mdui-theme-primary-'+main_color+' .mdui-color-theme{background-color:#232427!important}</style>');}
+// Initialize the page and load the necessary resources
+function init(){
     document.siteName = $('title').html();
-    $('body').addClass("mdui-theme-primary-blue-grey mdui-theme-accent-blue");
-    var html = `
-<header class="mdui-appbar mdui-color-theme"> 
-   <div id="nav" class="mdui-toolbar mdui-container"> 
-   </div> 
-</header>
-<div id="content" class="mdui-container"> 
-</div>
-	`;
+    $('body').addClass("mdui-theme-primary-"+main_color+" mdui-theme-accent-"+accent_color);
+    var html = "";
+    html += `
+    <header class="mdui-appbar mdui-color-theme">`
+    if(dark){
+        html += `
+        <div id="nav" class="mdui-toolbar mdui-container mdui-text-color-white-text">
+        </div>`;
+    }else{
+        html += `
+        <div id="nav" class="mdui-toolbar mdui-container">
+        </div>`;
+    }
+html += `
+    </header>
+        <div id="content" class="mdui-container"> 
+        </div>`;
     $('body').html(html);
 }
-
+ 
 function getDocumentHeight() {
     var D = document;
     return Math.max(
@@ -82,7 +87,7 @@ function nav(path) {
     var model = window.MODEL;
     var html = "";
     var cur = window.current_drive_order || 0;
-    html += `<a href="/${cur}:/" class="mdui-typo-headline folder"><img src="https://doctorplus.club/wp-content/uploads/2017/08/LOGO-DR.PLUS_.png" title="Logo" ></a>`;
+    html += `<a href="/${cur}:/" class="mdui-typo-headline folder">${document.siteName}</a>`;
     var names = window.drive_names;
     /*html += `<button class="mdui-btn mdui-btn-raised" mdui-menu="{target: '#drive-names'}"><i class="mdui-icon mdui-icon-left material-icons">share</i> ${names[cur]}</button>`;
     html += `<ul class="mdui-menu" id="drive-names" style="transform-origin: 0px 0px; position: fixed;">`;
@@ -92,7 +97,7 @@ function nav(path) {
     html += `</ul>`;*/
 
     // 修改为 select
-    html += `<select class="mdui-select" onchange="window.location.href=this.value" mdui-select style="overflow:visible;">`;
+    html += `<select class="mdui-select" onchange="window.location.href=this.value" mdui-select style="overflow:visible;padding-left:8px;padding-right:8px">`;
     names.forEach((name, idx) => {
         html += `<option value="/${idx}:/"  ${idx === cur ? 'selected="selected"' : ''} >${name}</option>`;
     });
@@ -183,22 +188,26 @@ function requestSearch(params, resultCallback) {
 
 // 渲染文件列表
 function list(path) {
-    var content = `
-	<div id="head_md" class="mdui-typo" style="display:none;padding: 20px 0;"></div>
-
-	 <div class="mdui-row"> 
+   var content = "";
+	content += `
+	<div id="head_md" class="mdui-typo" style="display:none;padding: 20px 0;"></div>`;
+    if(search){
+        if(dark){content += `<div class="mdui-textfield"><input class="mdui-textfield-input mdui-text-color-white-text" id="myInput" onkeyup="myFunction()" type="text" placeholder="Search for names.."></input></div>`;
+        }else{content += `<div class="mdui-textfield"><input class="mdui-textfield-input" id="myInput" onkeyup="myFunction()" type="text" placeholder="Search for names.."></input></div>`;}
+    }
+	content += `<div class="mdui-row"> 
 	  <ul class="mdui-list"> 
 	   <li class="mdui-list-item th"> 
 	    <div class="mdui-col-xs-12 mdui-col-sm-7">
-	     Tên
+	     文件
 	<i class="mdui-icon material-icons icon-sort" data-sort="name" data-order="more">expand_more</i>
 	    </div> 
 	    <div class="mdui-col-sm-3 mdui-text-right">
-	     Ngày đăng
+	     修改时间
 	<i class="mdui-icon material-icons icon-sort" data-sort="date" data-order="downward">expand_more</i>
 	    </div> 
 	    <div class="mdui-col-sm-2 mdui-text-right">
-	     Kích thước
+	     大小
 	<i class="mdui-icon material-icons icon-sort" data-sort="size" data-order="downward">expand_more</i>
 	    </div> 
 	    </li> 
@@ -207,7 +216,7 @@ function list(path) {
 	 <div class="mdui-row"> 
 	  <ul id="list" class="mdui-list"> 
 	  </ul> 
-	  <div id="count" class="mdui-hidden mdui-center mdui-text-center mdui-m-b-3 mdui-typo-subheading mdui-text-color-blue-grey-500">Tổng cộng <span class="number"></span></div>
+	  <div id="count" class="mdui-hidden mdui-center mdui-text-center mdui-m-b-3 mdui-typo-subheading mdui-text-color-blue-grey-500">共 <span class="number"></span> 项</div>
 	 </div>
 	 <div id="readme_md" class="mdui-typo" style="display:none; padding: 20px 0;"></div>
 	`;
@@ -294,7 +303,7 @@ function list(path) {
         successResultCallback,
         function (path) {
             $('#spinner').remove();
-            var pass = prompt("Vui lòng nhập mật khẩu vào website", "");
+            var pass = prompt("Directory encryption, please enter password", "");
             localStorage.setItem('password' + path, pass);
             if (pass != null && pass != "") {
                 list(path);
@@ -352,7 +361,7 @@ function append_files_to_list(path, files) {
                 });
             }
             var ext = p.split('.').pop().toLowerCase();
-            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|pdf|".indexOf(`|${ext}|`) >= 0) {
+            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|flac|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|".indexOf(`|${ext}|`) >= 0) {
                 targetFiles.push(filepath);
                 p += "?a=view";
                 c += " view";
@@ -557,7 +566,7 @@ function append_search_result_to_list(files) {
         } else {
             var c = "file";
             var ext = item.name.split('.').pop().toLowerCase();
-            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|pdf|".indexOf(`|${ext}|`) >= 0) {
+            if ("|html|php|css|go|java|js|json|txt|sh|md|mp4|webm|avi|bmp|jpg|jpeg|png|gif|m4a|mp3|flac|wav|ogg|mpg|mpeg|mkv|rm|rmvb|mov|wmv|asf|ts|flv|".indexOf(`|${ext}|`) >= 0) {
                 c += " view";
             }
             html += `<li class="mdui-list-item file mdui-ripple" target="_blank"><a id="${item['id']}" gd-type="${item.mimeType}" onclick="onSearchResultItemClick(this)" class="${c}">
@@ -668,15 +677,12 @@ function file(path) {
         return file_video(path);
     }
 
-    if ("|mp3|wav|ogg|m4a|".indexOf(`|${ext}|`) >= 0) {
+    if ("|mp3|flac|wav|ogg|m4a|".indexOf(`|${ext}|`) >= 0) {
         return file_audio(path);
     }
 
     if ("|bmp|jpg|jpeg|png|gif|".indexOf(`|${ext}|`) >= 0) {
         return file_image(path);
-    }
-	if ("|pdf|".indexOf(`|${ext}|`) >= 0) {
-        return file_document(path);
     }
 }
 
@@ -741,46 +747,28 @@ function file_video(path) {
         playBtn = `	<a class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" href="intent:${url}#Intent;package=com.mxtech.videoplayer.ad;S.title=${path};end"><i class="mdui-icon material-icons">&#xe039;</i>在mxplayer中播放</a>`;
     }
     var content = `
-	<div class="mdui-container-fluid">
+<div class="mdui-container-fluid">
 	<br>
-	<video
-    id="my-video"
-    class="video-js vjs-theme-fantasy"
-    controls
-    preload="auto"
-    width="100%"
-    data-setup="{}"
-  >
-    <source src="${url}" type="video/mp4" />
-    <p class="vjs-no-js">
-      To view this video please enable JavaScript, and consider upgrading to a
-      web browser that
-      <a href="https://videojs.com/html5-video-support/" target="_blank"
-        >supports HTML5 video</a
-      >
-    </p>
-  </video>
-	<script src="https://vjs.zencdn.net/7.7.5/video.js"></script>
-	${playBtn}
-	
+	<video class="mdui-video-fluid mdui-center" preload controls>
+	  <source src="${url}" type="video/mp4">
+	</video>
+	<br>${playBtn}
+	<!-- 固定标签 -->
+	<div class="mdui-textfield">
+	  <label class="mdui-textfield-label">下载地址</label>
+	  <input class="mdui-textfield-input" type="text" value="${url}"/>
+	</div>
+	<div class="mdui-textfield">
+	  <label class="mdui-textfield-label">HTML 引用地址</label>
+	  <textarea class="mdui-textfield-input"><video><source src="${url}" type="video/mp4"></video></textarea>
+	</div>
 </div>
 <a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
 	`;
     $('#content').html(content);
 }
-function file_document(path) {
-    var url = window.location.origin + path;
-    var content = `
-<div id="example1"></div>
-<object data="${url}" type="application/pdf" name="test.pdf">
-</object>
-<a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
-<script>PDFObject.embed("${url}", "#example1");</script>
 
-`;
-    $('#content').html(content);
-}
-// 文件展示 音频 |mp3|m4a|wav|ogg|
+// 文件展示 音频 |mp3|flac|m4a|wav|ogg|
 function file_audio(path) {
     var url = window.location.origin + path;
     var content = `
