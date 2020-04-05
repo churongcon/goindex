@@ -433,15 +433,15 @@ function render_search_result_list() {
 	  <ul class="mdui-list"> 
 	   <li class="mdui-list-item th"> 
 	    <div class="mdui-col-xs-12 mdui-col-sm-7">
-	     文件
+	     Tên
 	<i class="mdui-icon material-icons icon-sort" data-sort="name" data-order="more">expand_more</i>
 	    </div> 
 	    <div class="mdui-col-sm-3 mdui-text-right">
-	     修改时间
+	     Ngày đăng
 	<i class="mdui-icon material-icons icon-sort" data-sort="date" data-order="downward">expand_more</i>
 	    </div> 
 	    <div class="mdui-col-sm-2 mdui-text-right">
-	     大小
+	     Kích thước
 	<i class="mdui-icon material-icons icon-sort" data-sort="size" data-order="downward">expand_more</i>
 	    </div> 
 	    </li> 
@@ -450,7 +450,7 @@ function render_search_result_list() {
 	 <div class="mdui-row"> 
 	  <ul id="list" class="mdui-list"> 
 	  </ul> 
-	  <div id="count" class="mdui-hidden mdui-center mdui-text-center mdui-m-b-3 mdui-typo-subheading mdui-text-color-blue-grey-500">共 <span class="number"></span> 项</div>
+	  <div id="count" class="mdui-hidden mdui-center mdui-text-center mdui-m-b-3 mdui-typo-subheading mdui-text-color-blue-grey-500">Tổng file: <span class="number"></span></div>
 	 </div>
 	 <div id="readme_md" class="mdui-typo" style="display:none; padding: 20px 0;"></div>
 	`;
@@ -599,7 +599,7 @@ function onSearchResultItemClick(a_ele) {
     var cur = window.current_drive_order;
     var dialog = mdui.dialog({
         title: '',
-        content: '<div class="mdui-text-center mdui-typo-title mdui-m-b-1">正在获取目标路径...</div><div class="mdui-spinner mdui-spinner-colorful mdui-center"></div>',
+        content: '<div class="mdui-text-center mdui-typo-title mdui-m-b-1">Link...</div><div class="mdui-spinner mdui-spinner-colorful mdui-center"></div>',
         // content: '<div class="mdui-spinner mdui-spinner-colorful mdui-center"></div>',
         history: false,
         modal: true,
@@ -620,23 +620,23 @@ function onSearchResultItemClick(a_ele) {
                 closeOnEsc: true,
                 buttons: [
                     {
-                        text: '打开', onClick: function () {
+                        text: 'Mở', onClick: function () {
                             window.location.href = href
                         }
                     }, {
-                        text: '新标签中打开', onClick: function () {
+                        text: 'Mở ở tab mới', onClick: function () {
                             window.open(href)
                         }
                     }
-                    , {text: '取消'}
+                    , {text: 'Huỷ'}
                 ]
             });
             return;
         }
         dialog.close();
         dialog = mdui.dialog({
-            title: '<i class="mdui-icon material-icons">&#xe811;</i>获取目标路径失败',
-            content: 'o(╯□╰)o 可能是因为该盘中并不存在此项！也可能因为没有把【与我共享】的文件添加到个人云端硬盘中！',
+            title: '<i class="mdui-icon material-icons">&#xe811;</i>Lỗi',
+            content: 'o(╯□╰)o Không tim thấy',
             history: false,
             modal: true,
             closeOnEsc: true,
@@ -895,7 +895,7 @@ function utc2beijing(utc_datetime) {
     timestamp = timestamp / 1000;
 
     // 增加8个小时，北京时间比utc时间多八个时区
-    var unixtimestamp = timestamp + 8 * 60 * 60;
+    var unixtimestamp = timestamp + 7 * 60 * 60;
 
     // 时间戳转为时间
     var unixtimestamp = new Date(unixtimestamp * 1000);
@@ -950,8 +950,12 @@ function markdown(el, data) {
     }
 }
 
-// 监听回退事件
-window.onpopstate = function () {
+if(search){
+    document.write('<script src="//cdn.jsdelivr.net/gh/kulokenci/goindex-drive@2.3/themes/material/cari.js"></script>');
+}
+
+// Listen for fallback events
+window.onpopstate = function(){
     var path = window.location.pathname;
     render(path);
 }
