@@ -792,7 +792,7 @@ function file_video(path) {
     $('#content').html(content);
 	
 	jwplayer("myElement").setup({ 
-        file: url,
+        file: $url,
 
 		  width: "100%",
 
