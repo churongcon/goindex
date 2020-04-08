@@ -792,9 +792,9 @@ function file_video(path) {
     $('#content').html(content);
 	
 	jwplayer("myElement").setup({ 
-        file: "timelaps.mp4",
+        file: url,
 
-		  width: url,
+		  width: "100%",
 
 		  height: "100%",
 
