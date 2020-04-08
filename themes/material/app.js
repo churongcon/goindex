@@ -788,7 +788,7 @@ function file_video(path) {
 	<div id="myElement"></div>
 	<script>
 	jwplayer("myElement").setup({ 
-        file: ${url},
+        file: "${url}",
 
 		  width: "100%",
 
