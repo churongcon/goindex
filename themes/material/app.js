@@ -787,15 +787,11 @@ function file_video(path) {
 	<br>
 	<div id="myElement"></div>
 	    <script type="text/JavaScript">
-
-jwplayer("myElement").setup({ 
-        file: "${url}",
-
-		  width: "100%",
-
-		  height: "100%",
-
-		  stretching: "bestfit",
+ jwplayer("myElement").setup({ 
+        playlist: [{
+            file: "${url}",
+          
+        }]
       });
 	  </script>
 </div>
