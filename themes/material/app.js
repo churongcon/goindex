@@ -792,13 +792,13 @@ function file_video(path) {
 	`;
     $('#content').html(content);
 jwplayer("myElement").setup({ 
-        file: "${url}",
+        file: '${url}',
 
-		  width: "100%",
+		  width: '100%',
 
-		  height: "100%",
+		  height: '100%',
 
-		  stretching: "bestfit",
+		  stretching: 'bestfit',
       });
 }
 
