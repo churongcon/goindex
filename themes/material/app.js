@@ -786,20 +786,23 @@ function file_video(path) {
 <div class="mdui-container-fluid">
 	<br>
 	<div id="myElement"></div>
+	    <script type="text/JavaScript">
 
+jwplayer("myElement").setup({ 
+        file: "${url}",
+
+		  width: "100%",
+
+		  height: "100%",
+
+		  stretching: "bestfit",
+      });
+	  </script>
 </div>
 <a href="${url}" class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent"><i class="mdui-icon material-icons">file_download</i></a>
 	`;
     $('#content').html(content);
-jwplayer("myElement").setup({ 
-        file: '${url}',
 
-		  width: '100%',
-
-		  height: '100%',
-
-		  stretching: 'bestfit',
-      });
 }
 
 // 文件展示 音频 |mp3|flac|m4a|wav|ogg|
